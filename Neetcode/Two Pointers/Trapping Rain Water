@@ -1,0 +1,26 @@
+class Solution {
+    public int trap(int[] height) {
+        // Height of water determined by block ke left m larget, right m largest, in dono m smaller
+
+        // left m largest - preMax
+        // right m largest - postMax
+        int[] preMax = new int[height.length];
+        preMax[0] = height[0];
+        int[] postMax = new int[height.length];
+        postMax[height.length - 1] = height[height.length - 1];
+        for (int i = 1; i < height.length; i++){
+            preMax[i] = Math.max(preMax[i - 1], height[i]);
+        }
+        for (int i  = height.length - 2; i >= 0; i--){
+            postMax[i] = Math.max(postMax[i + 1], height[i]);
+        }
+
+        int water = 0;
+        for (int i = 1; i < height.length - 1; i++){
+            int currTrapped = Math.max(0, Math.min(preMax[i - 1], postMax[i+1]) - height[i]);
+            water += currTrapped;
+        }
+
+        return water;
+    }
+}
