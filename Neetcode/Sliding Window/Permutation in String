@@ -1,0 +1,29 @@
+class Solution {
+    public boolean checkInclusion(String s1, String s2) {
+        if (s1.length() > s2.length()) return false;
+
+        int[] freq_s1 = new int[26];
+        int[] freq_s2 = new int[26];
+        for (char ch : s1.toCharArray()){
+            freq_s1[ch-'a']++;
+        }
+
+        int i = 0;
+        int j = 0;
+        while (j < s2.length()){
+            freq_s2[s2.charAt(j) - 'a']++;
+            while(j - i + 1 < s1.length()){
+                j++;
+                freq_s2[s2.charAt(j) - 'a']++;
+            }
+            
+            if (Arrays.equals(freq_s1, freq_s2)) return true;
+            else {
+                freq_s2[s2.charAt(i) - 'a']--;
+                i++;
+                j++;
+            }
+        }
+        return false;
+    }
+}
