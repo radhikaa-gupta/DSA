@@ -1,0 +1,21 @@
+class Solution {
+    public boolean isPalindrome(String s) {
+        StringBuilder sb = new StringBuilder();
+        for (char ch : s.toCharArray()){
+            if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || (ch >= '0' && ch <= '9')){
+                if (ch >= 'A' && ch <= 'Z'){
+                    sb.append(Character.toLowerCase(ch));
+                    continue;
+                }
+                sb.append(ch);
+            }
+        }
+        // sb.reverse() reverses in place
+        // new allowcates new space
+        String og = new String(sb);
+        String reversed = new String(sb.reverse());
+        if (og.equals(reversed)) return true;
+        return false;
+        
+    }
+}
