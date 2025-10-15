@@ -1,0 +1,25 @@
+class Solution {
+    public boolean isValid(String s) {
+        HashMap<Character, Character> hm = new HashMap<>();
+        hm.put('(', ')');
+        hm.put('{', '}');
+        hm.put('[', ']');
+        Stack<Character> open = new Stack<>();
+
+        //Edge cases - only open brackets; only closing brackets
+
+        for (char ch :  s.toCharArray()){
+            if (hm.containsKey(ch)) open.push(ch); //hm is open bracket
+            else { // ch is a closing bracket
+                // the prev open bracket should correspond to it
+                if (!open.isEmpty() && hm.get(open.peek()) == ch) open.pop();
+                else return false;
+            }
+        }
+
+        // if open brackets
+        if (open.isEmpty()) return true;
+        return false;
+
+    }
+}
