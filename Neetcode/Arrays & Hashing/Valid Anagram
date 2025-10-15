@@ -1,0 +1,15 @@
+
+// O(nlogn) complexity -> coz sorting
+class Solution {
+    public boolean isAnagram(String s, String t) {
+        if (sorted(s).equals(sorted(t))) return true;
+        return false;
+    }
+
+    private static String sorted(String str){
+        char[] charAr = str.toCharArray();
+        Arrays.sort(charAr);
+        String ans = new String(charAr);
+        return ans;
+    }
+}
