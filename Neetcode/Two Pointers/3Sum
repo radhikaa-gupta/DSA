@@ -1,0 +1,30 @@
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+       //basically like 2 sum but target changes
+       // nums[i] + nums[j] == -nums[k] == target; where target = -nums[k] 
+       Set<List<Integer>> ans = new HashSet<>();
+       for(int k = 2; k < nums.length; k++){
+           List<List<Integer>> dublets = twosum(Arrays.copyOfRange(nums, 0, k+1),k);
+           if (!dublets.isEmpty()) {
+                for (List<Integer> duble: dublets){
+                    duble.add(nums[k]);
+                    Collections.sort(duble);
+                    ans.add(duble);
+                }
+           }
+       }
+       return new ArrayList<>(ans);
+    }
+
+    private static List<List<Integer>> twosum(int[] nums, int k){
+        List<List<Integer>> ans = new ArrayList<>();
+        HashMap<Integer, Integer> hm = new HashMap<>();;
+        for (int i = 0; i < nums.length - 1; i++){
+            if (hm.containsKey(nums[i])) ans.add(new ArrayList<> (List.of(nums[i], nums[hm.get(nums[i])])));                      
+            else{
+                hm.put(-nums[k] - nums[i], i);
+            }
+        }
+        return ans;
+    }
+}
