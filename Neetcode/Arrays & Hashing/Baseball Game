@@ -1,0 +1,30 @@
+class Solution {
+    public int calPoints(String[] operations) {
+        int[] ans = new int[operations.length];
+        int j = 0;
+        for (int i = 0; i < operations.length; i++){
+            if (operations[i].equals("D")){
+                ans[j] = ans[j-1] * 2;
+                j++;
+            }
+            else if (operations[i].equals("C")){
+                ans[j-1] = 0;
+                j--;
+            }
+            else if (operations[i].equals("+")){
+                ans[j] = ans[j-1] + ans[j-2];
+                j++;
+            }
+            else{
+                ans[j] = Integer.parseInt(operations[i]);
+                j++;
+            }
+        }
+
+        int sum = 0;
+        for (int i = 0; i < ans.length; i++){
+            sum += ans[i];
+        }
+        return sum;
+    }
+}
