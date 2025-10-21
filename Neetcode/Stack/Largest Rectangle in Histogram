@@ -1,0 +1,45 @@
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+        // nearest smallest rigt idx -> right; def = heights.length
+        // nearest smallest left idx -> left; def = -1
+        // ans = right - left - 1 * heights[i];
+        
+        Stack <Integer> stk = new Stack<>();
+        int[] left = new int[heights.length];
+        //left
+        for (int i = 0; i < heights.length; i++){
+            if (stk.isEmpty()) left[i] = -1;
+            else if (heights[stk.peek()] < heights[i]) left[i] = stk.peek();
+            else {
+                while(!stk.isEmpty() && heights[stk.peek()] >= heights[i]){
+                    stk.pop();
+                }
+                if(stk.isEmpty()) left[i] = -1;
+                else left[i] = stk.peek();
+            }
+            stk.push(i);
+        }
+
+        while(!stk.isEmpty()) stk.pop();
+        int[] right = new int[heights.length];
+        //left
+        for (int i = heights.length - 1; i >= 0; i--){
+            if (stk.isEmpty()) right[i] = heights.length;
+            else if (heights[stk.peek()] < heights[i]) right[i] = stk.peek();
+            else {
+                while(!stk.isEmpty() && heights[stk.peek()] >= heights[i]){
+                    stk.pop();
+                }
+                if(stk.isEmpty()) right[i] = heights.length;
+                else right[i] = stk.peek();
+            }
+            stk.push(i);
+        }
+
+        int ans = Integer.MIN_VALUE;
+        for (int i = 0; i < heights.length; i++){
+            ans = Math.max(ans,(right[i] - left[i] - 1) * heights[i]);
+        }
+        return ans;
+    }
+}
