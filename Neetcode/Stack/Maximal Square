@@ -1,0 +1,62 @@
+class Solution {
+    public int maximalSquare(char[][] matrix) {
+        // Solving maximal square using maximal rectangle
+        return maximalRectangle(matrix);
+    }
+
+    public int maximalRectangle(char[][] matrix) {
+        //using max rectange {nsr_index, nsl_index -> width-> area
+        int[] arr = new int[matrix[0].length];
+        for (int j = 0; j < matrix[0].length; j++){
+            arr[j] = matrix[0][j] - '0';
+        }
+        int max = maxAreaRec(arr);
+
+        for (int i = 1; i < matrix.length; i++){
+            for (int j = 0; j < matrix[0].length; j++){
+                if (matrix[i][j] == '0') arr[j] = 0;
+                else arr[j] += (matrix[i][j] - '0');
+            }
+            max = Math.max(max, maxAreaRec(arr));
+        }
+
+        return max;
+    }
+
+    public int maxAreaRec(int[] arr){
+        
+        int[] left = new int[arr.length];
+        Stack<Integer> stk = new Stack<>();
+        for (int i = 0; i < arr.length; i++){
+            if (stk.isEmpty()) left[i] = -1;
+            else if (arr[stk.peek()] < arr[i]) left[i] = stk.peek();
+            else {
+                while(!stk.isEmpty() && arr[stk.peek()] >= arr[i]) stk.pop();
+                if (stk.isEmpty()) left[i] = -1;
+                else left[i] = stk.peek();
+            }
+            stk.push(i);
+        }
+
+        int[] right = new int[arr.length];
+        while(!stk.isEmpty())stk.pop();
+        for (int i = arr.length - 1; i >= 0; i--){
+            if (stk.isEmpty()) right[i] = arr.length;
+            else if (arr[stk.peek()] < arr[i]) right[i] = stk.peek();
+            else {
+                while(!stk.isEmpty() && arr[stk.peek()] >= arr[i]) stk.pop();
+                if (stk.isEmpty()) right[i] = arr.length;
+                else right[i] = stk.peek();
+            }
+            stk.push(i);
+        }
+
+        //MADE CHANGES HERE
+        int max = 0;
+        for (int i = 0; i < arr.length; i++){
+            int side = Math.min(arr[i], right[i] - left[i] - 1);
+            max = Math.max(max, side * side);
+        }
+        return max;
+    }
+}
