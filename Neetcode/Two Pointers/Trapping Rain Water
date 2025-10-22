@@ -1,24 +1,24 @@
 class Solution {
     public int trap(int[] height) {
         // Height of water determined by block ke left m larget, right m largest, in dono m smaller
+        // smaller of (maxL, maxR) - height of curr = water stored above curr
+        int n = height.length;
+        int[] maxL = new int[n];
+        int[] maxR = new int[n];
 
-        // left m largest - preMax
-        // right m largest - postMax
-        int[] preMax = new int[height.length];
-        preMax[0] = height[0];
-        int[] postMax = new int[height.length];
-        postMax[height.length - 1] = height[height.length - 1];
-        for (int i = 1; i < height.length; i++){
-            preMax[i] = Math.max(preMax[i - 1], height[i]);
+        maxL[0] = height[0];
+        for (int i = 1; i < n; i++){
+            maxL[i] = Math.max(maxL[i-1], height[i]);
         }
-        for (int i  = height.length - 2; i >= 0; i--){
-            postMax[i] = Math.max(postMax[i + 1], height[i]);
+
+        maxR[n-1] = height[n-1];
+        for (int i = n-2; i >= 0; i--){
+            maxR[i] = Math.max(maxR[i+1], height[i]);
         }
 
         int water = 0;
-        for (int i = 1; i < height.length - 1; i++){
-            int currTrapped = Math.max(0, Math.min(preMax[i - 1], postMax[i+1]) - height[i]);
-            water += currTrapped;
+        for (int i = 0; i < n; i++){
+            water += (Math.min(maxL[i], maxR[i]) - height[i]);
         }
 
         return water;
