@@ -1,0 +1,35 @@
+class Solution {
+    public int evalRPN(String[] tokens) {
+        // push number into stack
+        // whenever operator, pop last 2 operate then push
+        Stack<Integer> stk = new Stack<>();
+        for (String str : tokens){
+            if (str.length() == 1 && !Character.isDigit(str.charAt(0))){
+                int b = stk.pop();
+                int a = stk.pop();
+                switch(str){
+                    case "+":
+                        stk.push(a + b);
+                        break;
+                    case "-":
+                        stk.push(a - b);
+                        break;
+                    case "*":
+                        stk.push(a * b);
+                        break;
+                    case "/":
+                        stk.push(a / b);
+                        break;
+                    default:
+                        stk.push(a);
+                        stk.push(b);
+                        break;
+                }
+            }
+            else {
+                stk.push(Integer.parseInt(str));
+            }
+        }
+        return stk.pop();
+    }
+}
