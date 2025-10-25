@@ -1,0 +1,32 @@
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int start = bs_start(nums,target);
+        int end = bs_end(nums,target);
+        return new int[] {start, end};
+    }
+
+    private int bs_start(int[] nums,int target){
+        int start = 0;
+        int end = nums.length - 1;
+        int res = -1;
+        while(start <= end){
+            int mid = start + ((end - start)/2) ;
+            if (nums[mid] == target) res = mid;
+            if (nums[mid] >= target) end = mid - 1;
+            else start = mid + 1;
+        }
+        return res;
+    }
+    private int bs_end(int[] nums,int target){
+        int start = 0;
+        int end = nums.length - 1;
+        int res = -1;
+        while(start <= end){
+            int mid = start + ((end - start)/2) ;
+            if (nums[mid] == target) res = mid;
+            if (nums[mid] > target) end = mid - 1;
+            else start = mid + 1;
+        }
+        return res;
+    }
+}
