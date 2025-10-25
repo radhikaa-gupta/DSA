@@ -1,0 +1,41 @@
+class Solution {
+    public int[] occurrencesOfElement(int[] nums, int[] queries, int x) {
+        int[][] idx = new int[nums.length][2];
+        for (int i = 0; i < nums.length; i++){
+            idx[i][0] = nums[i];
+            idx[i][1] = i;
+        }
+
+        Arrays.sort(idx, (a,b) -> a[0] - b[0]);
+
+
+        int[] ans = new int[queries.length];
+        int start = bs_start(idx,x);
+
+
+        for (int i = 0; i < queries.length; i++){
+            int q = queries[i];
+            
+            if (!(start == -1)&& (start + q - 1) < idx.length && idx[start + q - 1][0] == x){
+                ans[i] = idx[start + q - 1][1];
+            }
+            else ans[i] = -1;
+        }
+        return ans;
+        
+    }
+
+    private int bs_start(int[][] idx,int target){
+        int start = 0;
+        int end = idx.length - 1;
+        int res = -1;
+        while(start <= end){
+            int mid = start + ((end - start)/2) ;
+            if (idx[mid][0] == target) res = mid;
+            if (idx[mid][0] >= target) end = mid - 1;
+            else start = mid + 1;
+        }
+        return res;
+    }
+    
+}
