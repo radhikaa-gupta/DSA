@@ -1,0 +1,28 @@
+class Solution {
+    public int carFleet(int target, int[] position, int[] speed) {
+        // if peeche wali car reaches the destination faster or at the sme time than aage waali
+        // they must have become a car fleet at some point of time
+
+        // also both of them will reach destination at time of slower one(aage wali),let say t1
+        // so for the further peeche wali car, if it reaches dest at time faster than t1 then only it will          
+        // collide with the car fleet at some point of time,  
+        // if time is more -> aage wali both will reach pehle hi as one fleet so this is the slower fleet
+        int n = position.length;
+        Integer[] idx = new Integer[n];
+        for (int i = 0; i< n; i++) idx[i] = i;
+        Arrays.sort(idx, (a,b) -> position[a] - position[b]);
+
+        Stack<Double> stk = new Stack<>();
+
+        for (int i = n - 1; i >= 0; i--){
+            int index = idx[i];
+            double time = (double)(target - position[index]) / speed[index];
+            if (stk.isEmpty() || stk.peek() < time){
+                stk.push(time);
+            }
+            //new fleet
+        }
+
+        return stk.size();
+    }
+}
