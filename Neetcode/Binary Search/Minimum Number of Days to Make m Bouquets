@@ -1,0 +1,47 @@
+class Solution {
+    public int minDays(int[] bloomDay, int m, int k) {
+        //min days = min(bloomDay)
+        //max days = max(bloomDay)
+        if ((long) m * k > bloomDay.length) return -1; 
+        int max = bloomDay[0];
+        int min = bloomDay[0];
+        for (int day : bloomDay){
+            max = Math.max(max, day);
+            min = Math.min(min, day);
+        }
+
+        int ans = -1;
+        while(min <= max){
+            int mid = min + ((max - min)/2);
+            if (isValid(bloomDay,m, mid, k)){
+                ans = mid;
+                max = mid - 1;
+            }
+            else {
+                min = mid + 1;
+            }
+        }
+        return ans;
+    }
+
+    private boolean isValid(int[] bloomDay, int m, int day, int k){
+        // k = k adjacent flowers needed for one 
+        // window = k
+        int boquets = 0;
+        int count = 0;
+        for (int i = 0; i <bloomDay.length; i++){
+            if (bloomDay[i] > day){
+                count = 0;
+            }
+            else {
+                count++;
+            }
+            if (count == k) {
+                boquets++;
+                count = 0;
+            }
+        }
+        if (boquets >= m) return true;
+        return false;
+    }
+}
