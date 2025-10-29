@@ -1,0 +1,31 @@
+class Solution {
+    public int minEatingSpeed(int[] piles, int h) {
+        int min = 1;
+        // int max = max(piles). hour i.e each hour one  pile
+        int max = piles[0];
+        for (int bcount : piles){
+            max = Math.max(max, bcount);
+        }
+
+        int ans = 0;
+
+        while(min <= max){
+            int mid = min + ((max - min)/2); // bananas/hour
+            if (isValid(piles, h, mid)){
+                ans = mid;
+                max = mid - 1; // if less bananas / hour poss
+            }
+            else min = mid + 1;
+        }
+
+        return ans;
+    }
+
+    private boolean isValid(int[] piles, int h, int speed){
+        int hours = 0;
+        for (int bcount : piles){
+            hours += Math.ceil((double)bcount / speed);
+        }
+        return (hours <= h);
+    }
+}
