@@ -1,0 +1,33 @@
+class Solution {
+    public int firstMissingPositive(int[] nums) {
+        // VVIP - ans belomngs to set [1,2.....len(nums)+1]
+        // bcz if large element start at a later index ans will be just 1
+        // if they start at 1, leaving no gaps then only largest len(nums) +1 else the missing val or 1
+
+        // use array as extra space 
+        // MAP [1 to len(nums)+ 1] to index [0 to len(nums)]
+        // so index for i is i -1
+        
+        for (int i = 0; i < nums.length; i++){
+            if (nums[i] < 0 ) nums[i] = 0;
+        }
+
+        for (int i = 0; i < nums.length; i++){
+            int idx = Math.abs(nums[i]) - 1;
+            if (idx >= 0 && idx < nums.length) {
+                if (nums[idx] != 0 ) {
+                    if (nums[idx] > 0) nums[idx] = -nums[idx]; // duplicates
+                }
+                else nums[idx] = -(nums.length + 1); // handling zeros
+            }           
+        }
+
+        for (int i = 1; i <= nums.length; i++){
+            int idx = i - 1;
+            if (nums[idx] >= 0) return i;
+        }
+
+        return nums.length + 1;
+
+    }
+}
