@@ -1,0 +1,42 @@
+class Solution {
+    public int shipWithinDays(int[] weights, int days) {
+        // every day ships till max weigth of belt
+        // need least weight belt <= days
+
+        // min weight of belt = heaviest package cannot break package even if 1000 days;
+        // max weight = sum
+        int sum = 0;
+        int max = weights[0];
+        for (int i = 0; i < weights.length; i++){
+            sum += weights[i];
+            max = Math.max(max, weights[i]);
+        }
+
+        int ans = 1;
+        int low = max;
+        int high = sum;
+        while(low <= high){
+            int mid = low + ((high - low)/2);
+            if (isValid(weights, days, mid)) {
+                ans = mid;
+                high = mid - 1;
+            }
+            else low = mid  + 1;
+        }
+
+        return ans;
+    }
+
+    private boolean isValid(int[] weights,int days, int mid){
+        int day = 1;
+        int sum = 0;
+        for (int weight : weights){
+            if (sum + weight <= mid) sum += weight;
+            else{
+                day++;
+                sum = weight;
+            }
+        }   
+        return (day <= days);
+    }
+}
