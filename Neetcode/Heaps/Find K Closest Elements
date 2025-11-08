@@ -1,0 +1,37 @@
+class Solution {
+
+    class Pair implements Comparable<Pair>{
+        int dis;
+        int el;
+
+        Pair(int dis, int el){
+            this.dis = dis;
+            this.el = el;
+        }
+        
+        @Override
+        public int compareTo(Pair other){
+            if (this.dis == other.dis)
+                return other.el - this.el;
+            return other.dis - this.dis;
+        }
+    }
+    public List<Integer> findClosestElements(int[] arr, int k, int x) {
+        // Heap solution
+
+        PriorityQueue<Pair> pq = new PriorityQueue<>();
+        for (int i : arr){
+            int dis = Math.abs(i - x);
+            pq.add(new Pair(dis, i));
+            if (pq.size() > k) pq.poll();
+        }
+
+        List<Integer> ans = new LinkedList<>();
+        while(pq.size() > 0){
+            ans.add(pq.poll().el);
+        }
+
+        Collections.sort(ans);
+        return ans;
+    }
+}
