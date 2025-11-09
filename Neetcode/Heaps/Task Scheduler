@@ -1,0 +1,44 @@
+class Solution {
+    public int leastInterval(char[] tasks, int n) {
+        //What we'll do is we'll start with the most frequent element and at any point in time, 
+        // we'll pick up the most frequent element because if the most frequent element is left,
+        // and all other elements are less frequent and they're covered, we'll have a lot of time.
+        //  We'll put it then there will be idle time. Then you put it then they'll be idle time. 
+        // So we try that we put the most frequent one and then in all that idle time, we put the
+        // next frequent one, next frequent time. The most frequent one will create these gaps, 
+        // and then using the less frequent ones, we will fill the gaps. 
+
+        // Soln - place the most frequent one at any point of time
+
+        // All characters are same no order hence only freq imp
+
+        //Count freq of each alpha
+        int[] freq = new int[26];
+        for (char ch : tasks) freq[ch - 'A']++;
+
+        //max heap of frequencies
+        PriorityQueue<Integer> pq = new PriorityQueue(Collections.reverseOrder());
+        for (int f : freq) {
+            if (f > 0) pq.add(f);
+        }
+
+        //Linkedlist for freqleft-nexttime
+        Queue<int[]> ll = new LinkedList<>();
+
+        int time = 0;
+
+        while(!pq.isEmpty() || !ll.isEmpty()){
+            time += 1;
+            if (!pq.isEmpty()) {
+                int rem = pq.poll() - 1;
+                if (rem > 0) ll.add(new int[]{rem , time + n});
+            }
+
+            // pehla queue element hi add hoga is hoga bcz can't overlap
+            if (!ll.isEmpty() && ll.peek()[1] == time) pq.add(ll.poll()[0]);
+        }
+        
+        return time;
+    }
+
+}
