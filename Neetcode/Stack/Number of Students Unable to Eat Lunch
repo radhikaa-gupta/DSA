@@ -1,0 +1,25 @@
+class Solution {
+    public int countStudents(int[] students, int[] sandwiches) {
+        // use ptr to map sandwitch left
+        // use queue for students
+        // pop from front & if  top != ptr add at end
+        Queue<Integer> Students = new LinkedList<>();
+        for (int student : students) Students.add(student);
+
+        int ptr = 0;
+        int unableToEat = 0;
+        
+        while(!Students.isEmpty() && unableToEat < Students.size()){
+            int choice = Students.poll();
+            if (sandwiches[ptr] == choice){
+                ptr++;
+                unableToEat = 0;
+            } 
+            else {
+                Students.add(choice);
+                unableToEat++;
+            }
+        }
+        return Students.size();
+    }
+}
