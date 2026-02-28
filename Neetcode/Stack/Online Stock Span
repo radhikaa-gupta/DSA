@@ -1,39 +1,43 @@
 class StockSpanner {
-    // nearest greater left
-    // ans = curr index - ngl
-    // we are adding elements and returning ans too
-    class Pair{
-        int a; // price
-        int b; // idx
-        Pair(int a, int b){
-            this.a = a;
-            this.b = b;
-        }
-    }
 
-    Stack <Pair> stk;
-    int idx;
+    // This runs only once when the object is created.
+    // Use this to initialize data structures
+
+    Stack<Pair> stk;
+
     public StockSpanner() {
         stk = new Stack<>();
-        idx = 0;
     }
     
+    // This runs every time a new price comes in.
     public int next(int price) {
-        int ans = 1;
-        if (stk.isEmpty()) ans = 1;
-        else if (stk.peek().a > price) {
-            ans =  idx - stk.peek().b;
+        if (stk.isEmpty()){
+            stk.push(new Pair(price, 0));
+            return 1;
         }
-        else{
-            while(!stk.isEmpty() && stk.peek().a <= price) stk.pop();
-            if(stk.isEmpty()) ans = idx + 1;
-            else ans = idx - stk.peek().b;
+        else {
+            // next greater element to the left
+            int id = stk.peek().idx + 1;
+            int ans = 0;
+
+            while (!stk.isEmpty() && stk.peek().value <= price) stk.pop();
+            if (stk.isEmpty()) ans = id + 1;
+            else ans = id - stk.peek().idx;
+
+            stk.push(new Pair(price, id));
+            return ans;
         }
-        stk.push(new Pair(price, idx));
-        idx++;
-        return ans;
     }
-    
+}
+
+class Pair{
+    int value;
+    int idx;
+
+    public Pair(int value, int idx){
+        this.value = value;
+        this.idx = idx;
+    }
 }
 
 /**
