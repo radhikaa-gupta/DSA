@@ -1,35 +1,25 @@
 class Solution {
-    public int largestRectangleArea(int[] heights) {
-        // Area corresponding to a particular bar = Kitna it can extend left and right
-        // <= tak
-        // nsetr and nsetl se pehle tak
-
-        Stack<Integer> stk = new Stack<>();
-        int[] left = new int[heights.length];
-
-        for (int i = 0; i < heights.length; i++){
-            while (!stk.isEmpty() && heights[stk.peek()] >= heights[i]) stk.pop();
-            if (stk.isEmpty()) left[i] = -1;
-            else left[i] = stk.peek();
-            stk.push(i);
-        }
-
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        
+        //ngetr
         Stack<Integer> stk2 = new Stack<>();
-        int[] right = new int[heights.length];
+        int[] right = new int[nums.length];
 
-        for (int i = heights.length - 1; i >= 0; i--){
-            while (!stk2.isEmpty() && heights[stk2.peek()] >= heights[i]) stk2.pop();
-            if (stk2.isEmpty()) right[i] = heights.length;
+        for (int i = nums.length - 1; i >= 0; i--){
+            while (!stk2.isEmpty() && nums[stk2.peek()] <= nums[i]) stk2.pop();
+            if (stk2.isEmpty()) right[i] = nums.length;
             else right[i] = stk2.peek();
             stk2.push(i);
         }
 
-        int[] ans = new int[heights.length];
-        int max = 0;
-        for (int i = 0; i < ans.length; i++){
-            ans[i] = (right[i] - left[i] - 1) * heights[i];
-            max = Math.max(ans[i], max);
+        int[] maxWindow = new int[nums.length - k + 1];
+        int j = 0;
+        for (int i = 0; i <= nums.length - k; i++){
+            if (j < i) j = i;
+            while(right[j] < i + k) j = right[j];
+            maxWindow[i] = nums[j];
         }
-        return max;
+
+        return maxWindow;
     }
 }
