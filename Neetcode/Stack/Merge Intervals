@@ -1,0 +1,27 @@
+class Solution {
+    public int[][] merge(int[][] intervals) {
+        Arrays.sort(intervals, (a,b) -> a[0] - b[0]);
+
+        Stack<int[]> stk = new Stack<>();
+        for(int[] interval : intervals){
+            if (!stk.isEmpty() && interval[0] <= stk.peek()[1]){
+                int[] newInterval = stk.pop();
+                newInterval[1] = Math.max(newInterval[1], interval[1]);
+                stk.push(newInterval);
+            }
+            else stk.push(interval);
+        } 
+
+        int[][] ans = new int[stk.size()][];
+        Stack<int[]> tmp = new Stack<>();
+        while(!stk.isEmpty()) tmp.push(stk.pop());
+
+        int i = 0;
+        while(!tmp.isEmpty()){
+            ans[i] = tmp.pop();
+            i++;
+        }
+        
+        return ans;
+    }
+}
