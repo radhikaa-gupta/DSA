@@ -1,0 +1,57 @@
+class Solution {
+    public int calculate(String s) {
+        
+    // Infix calculator
+
+        Stack<Integer> num = new Stack<>();
+        Stack<Character> op = new Stack<>();
+
+        int ans = 0;
+        for (int i = 0; i < s.length(); i++){
+
+            char ch = s.charAt(i);
+            if (ch == ' ') continue;
+
+            if (Character.isDigit(ch)) {
+                //Build full number;
+                int number = 0;
+                while(i < s.length() && Character.isDigit(s.charAt(i))){
+                    number = number * 10 + (s.charAt(i) -'0');
+                    i++;
+                }
+
+                num.push(number);
+                i--; // step back because for-loop will increment
+            }
+    
+            else if (ch == '+' || ch == '-' || ch == '*' || ch == '/'){
+
+                while (!op.isEmpty() && precedence(ch) <= precedence(op.peek()) ){
+                    num.push(process(num, op.pop()));
+                }
+                op.push(ch);
+            }
+        }
+
+        while(!op.isEmpty()) num.push(process(num, op.pop()));
+        return num.pop();
+    }
+
+    public int precedence(char ch){
+        if (ch == '+' || ch == '-') return 1;
+        else return 2;
+    }
+
+    public int process(Stack<Integer> num, char ch){
+        int n2 = num.pop();
+        int n1 = num.pop();
+        
+        switch(ch){
+        case '+' : return n1 + n2;
+        case '-' : return n1 - n2;
+        case '*' : return n1 * n2;
+        case '/' : return n1 / n2;
+        default : return 0;
+        }
+    }
+}
