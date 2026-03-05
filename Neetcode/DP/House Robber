@@ -1,0 +1,24 @@
+class Solution {
+
+    Integer[] dp;
+
+    public int rob(int[] nums) {
+        // can't rob two adjacent houses
+        // two choices for every house - rob this, leave this, leaves two new universeof 
+        //next possibel houses to rob
+        dp = new Integer[nums.length];
+        return helper(nums, 0);
+    }
+
+    public int helper(int[] nums, int i){
+        if (i >= nums.length) return 0;
+
+        if (dp[i] != null) return dp[i];
+        
+        int rob = nums[i] + helper(nums, i + 2);
+        int skip = helper(nums, i + 1);
+
+        dp[i] = Math.max(rob, skip);
+        return dp[i];
+    }
+}
