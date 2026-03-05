@@ -13,15 +13,10 @@ class Solution {
         } 
 
         int[][] ans = new int[stk.size()][];
-        Stack<int[]> tmp = new Stack<>();
-        while(!stk.isEmpty()) tmp.push(stk.pop());
+        for (int i = ans.length - 1; i >= 0; i--){
+            ans[i] = stk.pop();
+        } 
 
-        int i = 0;
-        while(!tmp.isEmpty()){
-            ans[i] = tmp.pop();
-            i++;
-        }
-        
         return ans;
     }
 }
