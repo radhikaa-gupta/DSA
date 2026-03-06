@@ -1,0 +1,52 @@
+class Solution {
+
+    public int orangesRotting(int[][] grid) {
+        // BFS level by level, each level = 1 minute
+
+        // Simple
+        // Basically store already rotten oranges
+        // In first minute, those rotten oranges will rot new
+        // Then store those new rotten oranges
+        // In further minute rot more and so on..
+
+        Queue<int[]> q = new LinkedList<>();
+        int fresh = 0;
+
+        for (int r = 0; r < grid.length; r++){
+            for (int c = 0; c < grid[0].length; c++){
+                if (grid[r][c] == 1) fresh++;
+                else if (grid[r][c] == 2) q.add(new int[]{r,c});
+            }
+        }
+
+        if (fresh == 0) return 0;
+        int minute = 0;
+
+        int[][] dirs = {{1,0}, {0,1}, {-1, 0}, {0, -1}};
+
+        while(!q.isEmpty() && fresh > 0){
+            int size = q.size();
+            boolean rotted = false;
+
+            for (int i = 0; i < size; i++){
+                int[] idx = q.poll();
+                int or = idx[0];
+                int oc = idx[1];
+
+                for(int[] dir : dirs){
+                    int r = or + dir[0];
+                    int c = oc + dir[1];
+
+                    if (r >= 0 && c >= 0 && r < grid.length && c < grid[0].length && grid[r][c] == 1){
+                        grid[r][c] = 2;
+                        fresh--;
+                        q.add(new int[]{r,c});
+                        rotted = true;
+                    }
+                }
+            }
+            minute++;
+        }
+        return fresh == 0 ? minute : -1;
+    }
+}
