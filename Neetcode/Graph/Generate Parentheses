@@ -1,0 +1,19 @@
+class Solution {
+    List<String> ans = new ArrayList<>();
+    public List<String> generateParenthesis(int n) {
+        helper(n, "", 0,0);
+        return ans;
+    }
+
+    void helper(int n, String para, int open, int close){
+        if (close > open) return;
+
+        if (open == n && close == n) {
+            ans.add(para);      
+            return;
+        }
+        
+        if (open < n) helper(n, para + "(", open + 1, close);
+        if (close < open) helper(n, para + ")", open, close + 1);
+    }
+}
