@@ -1,15 +1,21 @@
-
-// O(nlogn) complexity -> coz sorting
 class Solution {
     public boolean isAnagram(String s, String t) {
-        if (sorted(s).equals(sorted(t))) return true;
-        return false;
-    }
+        int[] chr = new int[26];
+        for (char ch : s.toCharArray()){
+            chr[ch - 'a']++;
+        }
+        for (char ch : t.toCharArray()){
+            chr[ch - 'a']--;
+        }
 
-    private static String sorted(String str){
-        char[] charAr = str.toCharArray();
-        Arrays.sort(charAr);
-        String ans = new String(charAr);
-        return ans;
+        boolean anagram =true;
+        for (int ch : chr){
+            if (ch != 0) {
+                anagram = false;
+                break;
+            }
+        } 
+
+        return anagram;
     }
 }
