@@ -1,0 +1,31 @@
+class Solution {
+    public int[] colorTheArray(int n, int[][] queries) {
+        int[] colors = new int[n];
+        int[] ans = new int[queries.length];
+        // basically count how many adjacent elemenst hava same colour
+        int totalPairs = 0;
+        int i = 0;
+        for (int[] query: queries){
+            int idx = query[0];
+            int newColor = query[1];
+            int oldColor = colors[idx];
+
+            //remove old contributions
+            if (oldColor != 0) {
+                if (idx + 1 < n && colors[idx] == colors[idx + 1]) totalPairs--;
+                if (idx - 1 >= 0 && colors[idx] == colors[idx - 1]) totalPairs--;
+            }
+
+            colors[idx] = newColor;
+
+            // Add new contributions
+            if (idx + 1 < n && colors[idx] == colors[idx + 1]) totalPairs++;
+            if (idx - 1 >= 0 && colors[idx] == colors[idx - 1]) totalPairs++;
+            
+            ans[i] = totalPairs;
+            i++;
+        }
+
+        return ans;
+    }
+}
