@@ -1,0 +1,59 @@
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        // prerequisite of pre[0] = pre[1];
+        // return false if prerequisite of any course turns out to be itself
+
+        // treat each node as a directed graph
+        // if graph contains cycle -> khudka prerequisite return false
+
+        // So detect cycle in a directed graph
+        // --------------------------------
+        // int[] indegree = new int[numCourses];
+
+        // for each prerequisite:
+        //     indegree[course]++
+
+        // Queue<Integer> q = new LinkedList<>();
+
+        // add courses with indegree 0
+
+        // while queue not empty:
+        //     take course
+        //     reduce indegree of neighbors
+
+        // count how many courses taken
+        // ---------------------
+
+        int[] indegree = new int[numCourses];
+        for (int[] pre : prerequisites){
+            indegree[pre[0]]++;
+        }
+
+        Queue<Integer> q = new ArrayDeque<>();
+        
+        for (int i = 0; i < numCourses; i++){
+            if (indegree[i] == 0) q.add(i);
+        }
+
+        int taken = 0;
+
+        while (!q.isEmpty()){
+            // Take a course with no prerequisite and complete the next course which were dependant on it
+            
+            int course = q.poll();
+            taken++;
+
+            for(int[] pre : prerequisites){
+                if (pre[1]==course) {
+                    indegree[pre[0]]--;
+                    
+                    if (indegree[pre[0]] == 0) {
+                    q.add(pre[0]);
+                    }
+                }
+            }
+        }
+
+        return taken == numCourses;
+    }
+}
