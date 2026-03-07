@@ -1,0 +1,32 @@
+class Solution {
+    public int[] canSeePersonsCount(int[] heights) {
+        // A person can see all the monotonically increasing 
+        // taller persons, until and including ngetr
+        // So will start from right
+        // Create a monotonically decreasing stack form the right till the person
+
+        int[] ans = new int[heights.length];
+
+        Stack<Integer> stk = new Stack<>();
+        for (int i = heights.length - 1; i >= 0; i--){
+            //Bigger person will block all right wale so pop
+            // see stack and count untul inclduing you encounter a biger person
+            int count = 0;
+
+            while(!stk.isEmpty() && stk.peek() < heights[i]){
+                stk.pop();
+                count++;
+            } 
+            
+            if (stk.isEmpty()) count--; // Coz ngetr doesn't exist why include in next step
+            ans[i] = count + 1;
+
+            stk.push(heights[i]);
+            
+        }
+
+        return ans;
+        
+
+    }
+}
