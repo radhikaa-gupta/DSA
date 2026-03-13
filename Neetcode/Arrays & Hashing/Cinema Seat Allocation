@@ -1,0 +1,44 @@
+class Solution {
+    public int maxNumberOfFamilies(int n, int[][] reservedSeats) {
+        // either 4 lagatar
+        // or 2-2 ke groups
+        // 1 <= n <= 10^9 : can't visit empty row
+        // 1 <= reservedSeats.length <= min(10*n, 10^4)
+
+        HashMap<Integer, ArrayList> hm = new HashMap<>();
+        for (int[] entry : reservedSeats){
+            int row = entry[0];
+            int col = entry[1];
+
+            if (!hm.containsKey(row)) hm.put(row,new ArrayList<Integer>());
+            hm.get(row).add(col);
+        }
+
+        int groups = 2 * n;
+
+        for (int key : hm.keySet()){
+            ArrayList<Integer> occupied = hm.get(key);
+            boolean a = false, b = false, c = false;
+            for (int occupy : occupied){
+                // a : between 2 and 5
+                if (occupy >= 2 & occupy <= 5){
+                    a = true;
+                }
+                // b : between 6 and 9
+                if (occupy >= 6 & occupy <= 9){
+                    b = true;
+                }
+                // c : between 4 and 7
+                if (occupy >= 4 & occupy <= 7){
+                    c = true;
+                }
+            }
+
+            if (a & b & c) groups = groups - 2;
+            else if (a & b & !c) groups--;
+            else if ((a & !b) || (!a & b)) groups--;
+        }
+
+        return groups;
+    }
+}
