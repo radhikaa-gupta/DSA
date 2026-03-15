@@ -1,0 +1,19 @@
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        // subarray sum = prefixSum(r) - prefixSum(l-1) = k
+        // so prefixsum(r) = k + prefixSum(l-1);
+        // if any prev prefix sum exists which has value "prefixsum(r) - k"
+        // We have a subarray: starting anywhere pehle AND ending here
+
+        HashMap<Integer,Integer> hm = new HashMap<>();
+        int prefix = 0;
+        int ans = 0;
+        for (int num: nums){
+            prefix += num;
+            ans += hm.getOrDefault(prefix - k, 0);
+            if (prefix == k) ans++;
+            hm.put(prefix, hm.getOrDefault(prefix, 0) + 1);
+        }
+        return ans;
+     }
+}
