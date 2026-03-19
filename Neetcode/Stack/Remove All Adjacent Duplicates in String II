@@ -1,0 +1,41 @@
+class Solution {
+    public String removeDuplicates(String s, int k) {
+        // Stack me (char + count) store karo 
+        // → same char aaye toh count badhao, k ho jaaye toh hata do
+        // End me stack se string banao → 
+        // automatically saare duplicates remove ho jaate hain
+
+        Stack<Pair> stk = new Stack<>();
+        for(char ch: s.toCharArray()){
+            if (!stk.isEmpty() && stk.peek().ch == ch) {
+                stk.peek().f++;
+                if (stk.peek().f == k) stk.pop();
+            }
+            else {
+                stk.push(new Pair(ch, 1));
+            }
+        }
+
+        //  you can use a for-each loop to read elements from a Stack
+        //  since Stack implements Iterable.
+
+        StringBuilder ans = new StringBuilder();
+        for (Pair p : stk){
+            for (int i = 0; i < p.f; i++){
+                ans.append(p.ch);
+            }
+        }
+
+        return ans.toString();
+    }
+
+    public class Pair{
+        char ch;
+        int f;
+
+        public Pair(char ch, int f){
+            this.ch = ch;
+            this.f = f;
+        }
+    }
+}
