@@ -1,0 +1,22 @@
+class Solution {
+    public int minOperations(int n) {
+
+        // Basically 2 ki closes power se subtract
+        // We can maipulate addition to subtraction, and negative to positive
+        // Canvas that needs to be filled by 2's
+        int steps = 0;
+
+        while (n != 0){
+            long rounded = Math.round(root2(n));
+            n -= (int)(Math.pow(2, rounded));
+            n = Math.abs(n);
+            steps++;
+        }
+        return steps;
+
+    }
+
+    public double root2 (int x){
+        return (Math.log(x)/Math.log(2));
+    }
+}
