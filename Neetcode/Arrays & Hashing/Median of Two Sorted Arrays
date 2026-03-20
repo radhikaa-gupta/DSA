@@ -1,0 +1,40 @@
+//  O(m + n) solution
+
+class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int count = nums1.length + nums2.length;
+        int find1; int find2;
+        if (count % 2 == 0) {
+            find2 = count/2;
+            find1 = find2 - 1;
+        }
+        else {
+            find2 = count/2;
+            find1 = find2;
+        }
+
+        int iter = 0;
+        int ptr1 = 0;
+        int ptr2 = 0;
+
+        int prev = 0;
+        int curr = 0;
+        while (iter <= find2){
+            prev = curr;
+            
+            if (ptr1 < nums1.length && ptr2 < nums2.length) {
+                if (nums1[ptr1] <= nums2[ptr2]){
+                    curr = nums1[ptr1++];
+                }
+                else curr = nums2[ptr2++];
+            }
+            else if (ptr1 < nums1.length) curr =  nums1[ptr1++]; // ptr2 exhausted
+            else curr = nums2[ptr2++]; // ptr1 exhausted
+            iter++;
+        }
+
+        if (find1 == find2) return curr;
+        else return (prev + curr) / 2.0;
+
+    }
+}
