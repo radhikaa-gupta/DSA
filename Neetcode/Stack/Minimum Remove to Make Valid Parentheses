@@ -1,0 +1,38 @@
+class Solution {
+    public String minRemoveToMakeValid(String s) {
+        // only closing brackets whoch have a opening bracket will be added, rest will be skipped,
+        // remaning opening brackets will be skipped
+
+        int open = 0;
+        StringBuilder sb = new StringBuilder();
+        for (char ch : s.toCharArray()){
+            if (ch == '('){
+                open++;
+                sb.append(ch);
+            }
+
+            else if (ch == ')'){
+                if (open > 0){
+                    //skipped extra closing
+                    open--;
+                    sb.append(ch);
+                }
+            }
+            else sb.append(ch); //alphabets
+        }
+
+        StringBuilder result = new StringBuilder();
+        // remove extra oepning from right end
+        // "())()(((" -> "()()" not "))(("
+        String str = sb.toString();
+        for (int i = str.length() - 1; i >= 0; i--){
+            char ch = str.charAt(i);
+            if (ch == '(' && open > 0){
+                open--;
+                continue;
+            }
+            result.append(ch);
+        }
+        return result.reverse().toString();
+    }
+}
