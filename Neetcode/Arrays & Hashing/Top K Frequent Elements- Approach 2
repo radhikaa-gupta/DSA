@@ -1,0 +1,27 @@
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        // Build hashMap, store nums and freq
+        // Use Minheap, pop top is size exceeds k
+        
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        for (int num: nums) hm.put(num, hm.getOrDefault(num, 0) + 1);
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a,b) -> a[1] - b[1]);
+        for (int key: hm.keySet()){
+            pq.add(new int[]{key, hm.get(key)});
+            if (pq.size() > k){
+                //baaki k present ki frequency is more than this one, hence remove
+                pq.remove();
+            }
+        }
+
+        int[] ans = new int[k];
+        int i = 0;
+        while(!pq.isEmpty()){
+            ans[i] = pq.remove()[0];
+            i++;
+        }
+
+        return ans;
+    }
+}
