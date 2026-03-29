@@ -1,0 +1,11 @@
+class Solution {
+    public void deleteNode(ListNode node) {
+        // VV INTERESTING
+        // Copy the next node's value in the current node, 
+        // Delete the next node instead
+
+        node.val = node.next.val;
+        node.next = node.next.next;
+        
+    }
+}
